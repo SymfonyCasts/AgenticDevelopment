@@ -16,6 +16,9 @@
         "symfony/security-bundle": "8.1.*",
         "symfony/yaml": "8.1.*"
     },
+    "require-dev": {
+        "symfony/maker-bundle": "^1.67"
+    },
     "config": {
         "allow-plugins": {
             "php-http/discovery": true,
@@ -23,7 +26,10 @@
             "symfony/runtime": true
         },
         "bump-after-update": true,
-        "sort-packages": true
+        "sort-packages": true,
+        "platform": {
+            "php": "8.4"
+        }
     },
     "autoload": {
         "psr-4": {
@@ -68,8 +74,5 @@
             "require": "8.1.*",
             "docker": true
         }
-    },
-    "require-dev": {
-        "symfony/maker-bundle": "^1.67"
     }
 }

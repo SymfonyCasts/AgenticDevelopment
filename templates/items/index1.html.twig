@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Time Traveler's Lost &amp; Found</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          tardis: {
+            DEFAULT: '#0B3D91',
+            dark: '#061C3E',
+            light: '#2F5FA8',
+            50: '#EAF1FC'
+          },
+          accent: {
+            DEFAULT: '#F2A93B',
+            dark: '#C9820A',
+            light: '#FBD08A'
+          }
+        },
+        fontFamily: {
+          display: ['Orbitron', 'sans-serif'],
+          body: ['Inter', 'sans-serif']
+        },
+        boxShadow: {
+          glow: '0 0 25px rgba(242, 169, 59, 0.35)'
+        }
+      }
+    }
+  };
+</script>
+<style>
+  body { font-family: 'Inter', sans-serif; }
+  .font-display { font-family: 'Orbitron', sans-serif; }
+  .tardis-lamp {
+    box-shadow: 0 0 10px 3px rgba(242,169,59,0.8);
+    animation: pulse-lamp 2.4s ease-in-out infinite;
+  }
+  @keyframes pulse-lamp {
+    0%, 100% { opacity: 1; box-shadow: 0 0 8px 2px rgba(242,169,59,0.7); }
+    50% { opacity: 0.6; box-shadow: 0 0 16px 5px rgba(242,169,59,0.4); }
+  }
+  .item-card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  }
+  .item-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 30px rgba(11, 61, 145, 0.18);
+    border-color: #2F5FA8;
+  }
+  .panel-lines {
+    background-image: repeating-linear-gradient(90deg, rgba(255,255,255,0.06) 0px, rgba(255,255,255,0.06) 2px, transparent 2px, transparent 40px);
+  }
+</style>
+</head>
+<body class="bg-tardis-50 text-slate-800 min-h-screen flex flex-col">
+
+  <header class="bg-tardis dark:bg-tardis panel-lines border-b-4 border-accent">
+    <div class="max-w-6xl mx-auto px-6 py-6 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <span class="w-4 h-4 rounded-full bg-accent tardis-lamp"></span>
+        <div>
+          <h1 class="font-display text-white text-xl sm:text-2xl tracking-wide">TIME TRAVELER'S LOST &amp; FOUND</h1>
+          <p class="text-tardis-light text-xs sm:text-sm font-medium tracking-widest uppercase">Property Office &middot; Displaced in Time</p>
+        </div>
+      </div>
+      <div class="hidden sm:block text-right text-tardis-50/80 text-xs font-medium">
+        <p>Est. sometime.</p>
+        <p>Somewhen, Gallifrey.</p>
+      </div>
+    </div>
+  </header>
+
+  <main class="flex-1 max-w-6xl w-full mx-auto px-6 py-10">
+    <div class="mb-8">
+      <h2 class="font-display text-2xl sm:text-3xl text-tardis-dark mb-2">Recently Recovered Items</h2>
+      <p class="text-slate-600 max-w-2xl">
+        Items materialize here after being left behind across all of time and space. Recognize something?
+        Select it below to view details and file a claim.
+      </p>
+    </div>
+
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6" id="item-grid">
+      <!-- Cards injected by script -->
+    </div>
+  </main>
+
+  <footer class="bg-tardis-dark text-tardis-50/70 text-xs">
+    <div class="max-w-6xl mx-auto px-6 py-6 flex flex-col sm:flex-row justify-between gap-2">
+      <p>&copy; <span id="year"></span> Time Traveler's Lost &amp; Found. All temporal paradoxes are your own responsibility.</p>
+      <p>Unclaimed items after 400 years will be recycled into sonic screwdrivers.</p>
+    </div>
+  </footer>
+
+  <script src="data.js"></script>
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    const grid = document.getElementById('item-grid');
+
+    LOST_ITEMS.forEach((item) => {
+      const card = document.createElement('a');
+      card.href = `item.html?id=${encodeURIComponent(item.id)}`;
+      card.className = 'item-card block bg-white rounded-xl border-2 border-tardis-50 overflow-hidden';
+
+      card.innerHTML = `
+        <div class="${item.colorClass} h-36 flex items-center justify-center text-6xl">
+          ${item.emoji}
+        </div>
+        <div class="p-5">
+          <h3 class="font-display text-base text-tardis-dark mb-1 leading-snug">${item.name}</h3>
+          <p class="text-sm text-slate-600 mb-3 line-clamp-2">${item.description}</p>
+          <p class="text-xs text-slate-500 mb-4 flex items-center gap-1">
+            <span>🕐</span> Found: ${item.dateFound}
+          </p>
+          <span class="inline-flex items-center gap-1 text-sm font-semibold text-white bg-accent hover:bg-accent-dark px-4 py-2 rounded-lg transition-colors">
+            View Details &rarr;
+          </span>
+        </div>
+      `;
+
+      grid.appendChild(card);
+    });
+  </script>
+</body>
+</html>

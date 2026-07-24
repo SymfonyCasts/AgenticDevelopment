@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}List items{% endblock %}
+
+{% block body %}
+    <ul>
+        <li><a href="{{ path('app_items_show', {id: 1}) }}">Item 1</a></li>
+        <li><a href="{{ path('app_items_show', {id: 2}) }}">Item 2</a></li>
+    </ul>
+{% endblock %}

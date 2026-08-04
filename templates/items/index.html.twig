@@ -1,10 +1,55 @@
+
 {% extends 'base.html.twig' %}
-
-{% block title %}List items{% endblock %}
-
 {% block body %}
-    <ul>
-        <li><a href="{{ path('app_items_show', {id: 1}) }}">Item 1</a></li>
-        <li><a href="{{ path('app_items_show', {id: 2}) }}">Item 2</a></li>
-    </ul>
+<body class="bg-tardis-50 text-slate-800 min-h-screen flex flex-col">
+  <main class="flex-1 max-w-6xl w-full mx-auto px-6 py-10">
+    <div class="mb-8">
+      <h2 class="font-display text-2xl sm:text-3xl text-tardis-dark mb-2">Recently Recovered Items</h2>
+      <p class="text-slate-600 max-w-2xl">
+        Items materialize here after being left behind across all of time and space. Recognize something?
+        Select it below to view details and file a claim.
+      </p>
+        <ul>
+            <li><a href="{{ path('app_items_show', {id: 1}) }}">Item 1</a></li>
+            <li><a href="{{ path('app_items_show', {id: 2}) }}">Item 2</a></li>
+        </ul>
+    </div>
+
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6" id="item-grid">
+      <!-- Cards injected by script -->
+    </div>
+  </main>
+
+  <script src="data.js"></script>
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    const grid = document.getElementById('item-grid');
+
+    LOST_ITEMS.forEach((item) => {
+      const card = document.createElement('a');
+      card.href = `item.html?id=${encodeURIComponent(item.id)}`;
+      card.className = 'item-card block bg-white rounded-xl border-2 border-tardis-50 overflow-hidden';
+
+      card.innerHTML = `
+        <div class="${item.colorClass} h-36 flex items-center justify-center text-6xl">
+          ${item.emoji}
+        </div>
+        <div class="p-5">
+          <h3 class="font-display text-base text-tardis-dark mb-1 leading-snug">${item.name}</h3>
+          <p class="text-sm text-slate-600 mb-3 line-clamp-2">${item.description}</p>
+          <p class="text-xs text-slate-500 mb-4 flex items-center gap-1">
+            <span>🕐</span> Found: ${item.dateFound}
+          </p>
+          <span class="inline-flex items-center gap-1 text-sm font-semibold text-white bg-accent hover:bg-accent-dark px-4 py-2 rounded-lg transition-colors">
+            View Details &rarr;
+          </span>
+        </div>
+      `;
+
+      grid.appendChild(card);
+    });
+  </script>
+</body>
+</html>
 {% endblock %}

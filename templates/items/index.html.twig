@@ -5,14 +5,60 @@
   <main class="flex-1 max-w-6xl w-full mx-auto px-6 py-10">
     <div class="mb-8">
       <h2 class="font-display text-2xl sm:text-3xl text-tardis-dark mb-2">Recently Recovered Items</h2>
-      <p class="text-slate-600 max-w-2xl">
+      <p class="text-slate-600 max-w-2xl mb-4">
         Items materialize here after being left behind across all of time and space. Recognize something?
         Select it below to view details and file a claim.
       </p>
-        <ul>
-            <li><a href="{{ path('app_items_show', {id: 1}) }}">Item 1</a></li>
-            <li><a href="{{ path('app_items_show', {id: 2}) }}">Item 2</a></li>
-        </ul>
+        <div class="grid grid-cols-3 gap-x-4">
+            <div class="col-span-1 mb-6">
+                <div class="rounded-xl h-56 flex items-center justify-center text-9xl border-2 border-tardis-50 mb-6 bg-green-800">
+                  {# IMAGE GOES HERE #}
+                </div>
+                <h2 class="font-display text-2xl text-tardis-dark mb-3">Smart Watch</h2>
+                <p class="text-slate-600 mb-4">Valyrian Steel infused smart watch, compatible with devices from 3300 and after</p>
+                <a href="{{ path('app_items_show', {id: 1}) }}" class="w-full bg-accent hover:bg-accent-dark text-white font-semibold px-5 py-3 rounded-lg transition-colors">Claim Item</a>
+            </div>
+            <div class="col-span-1 mb-6">
+                <div class="rounded-xl h-56 flex items-center justify-center text-9xl border-2 border-tardis-50 mb-6 bg-gray-500">
+                  {# IMAGE GOES HERE #}
+                </div>
+                <h2 class="font-display text-2xl text-tardis-dark mb-3">Smart Watch</h2>
+                <p class="text-slate-600 mb-4">Valyrian Steel infused smart watch, compatible with devices from 3300 and after</p>
+                <a href="{{ path('app_items_show', {id: 2}) }}" class="w-full bg-accent hover:bg-accent-dark text-white font-semibold px-5 py-3 rounded-lg transition-colors">Claim Item</a>
+            </div>
+            <div class="col-span-1 mb-6">
+                <div class="rounded-xl h-56 flex items-center justify-center text-9xl border-2 border-tardis-50 mb-6 bg-gray-500">
+                  {# IMAGE GOES HERE #}
+                </div>
+                <h2 class="font-display text-2xl text-tardis-dark mb-3">Smart Watch</h2>
+                <p class="text-slate-600 mb-4">Valyrian Steel infused smart watch, compatible with devices from 3300 and after</p>
+                <a href="{{ path('app_items_show', {id: 2}) }}" class="w-full bg-accent hover:bg-accent-dark text-white font-semibold px-5 py-3 rounded-lg transition-colors">Claim Item</a>
+            </div>
+            <div class="col-span-1 mb-6">
+                <div class="rounded-xl h-56 flex items-center justify-center text-9xl border-2 border-tardis-50 mb-6 bg-green-800">
+                  {# IMAGE GOES HERE #}
+                </div>
+                <h2 class="font-display text-2xl text-tardis-dark mb-3">Smart Watch</h2>
+                <p class="text-slate-600 mb-4">Valyrian Steel infused smart watch, compatible with devices from 3300 and after</p>
+                <a href="{{ path('app_items_show', {id: 1}) }}" class="w-full bg-accent hover:bg-accent-dark text-white font-semibold px-5 py-3 rounded-lg transition-colors">Claim Item</a>
+            </div>
+            <div class="col-span-1 mb-6">
+                <div class="rounded-xl h-56 flex items-center justify-center text-9xl border-2 border-tardis-50 mb-6 bg-gray-500">
+                  {# IMAGE GOES HERE #}
+                </div>
+                <h2 class="font-display text-2xl text-tardis-dark mb-3">Smart Watch</h2>
+                <p class="text-slate-600 mb-4">Valyrian Steel infused smart watch, compatible with devices from 3300 and after</p>
+                <a href="{{ path('app_items_show', {id: 2}) }}" class="w-full bg-accent hover:bg-accent-dark text-white font-semibold px-5 py-3 rounded-lg transition-colors">Claim Item</a>
+            </div>
+            <div class="col-span-1 mb-6">
+                <div class="rounded-xl h-56 flex items-center justify-center text-9xl border-2 border-tardis-50 mb-6 bg-gray-500">
+                  {# IMAGE GOES HERE #}
+                </div>
+                <h2 class="font-display text-2xl text-tardis-dark mb-3">Smart Watch</h2>
+                <p class="text-slate-600 mb-4">Valyrian Steel infused smart watch, compatible with devices from 3300 and after</p>
+                <a href="{{ path('app_items_show', {id: 2}) }}" class="w-full bg-accent hover:bg-accent-dark text-white font-semibold px-5 py-3 rounded-lg transition-colors">Claim Item</a>
+            </div>
+        </div>
     </div>
 
     <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6" id="item-grid">

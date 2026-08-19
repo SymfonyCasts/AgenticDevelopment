@@ -28,6 +28,9 @@ automatically. Without the Symfony CLI you must run that watcher yourself.
 php bin/console <cmd>              # or: symfony console <cmd>
 php bin/console tailwind:build     # one-off CSS build -> var/tailwind/app.built.css
 php bin/console make:migration && php bin/console doctrine:migrations:migrate
+php bin/console foundry:load-fixtures dev  # rebuild the DB and load every story
+php bin/console foundry:load-fixtures items --append   # one story, keep existing rows
+php bin/console make:factory / make:story # scaffold a Foundry factory or story
 php bin/console importmap:require <pkg>   # add JS deps (never npm/yarn — see below)
 php bin/console debug:router
 ```
@@ -65,26 +68,49 @@ names get a `_test` suffix automatically (`config/packages/doctrine.yaml`).
   any — third-party JS goes through `importmap:require`. (The guarded FrankenPHP
   hot-reload block is stock recipe code and is inert here; leave it be.)
 - **Tailwind v4 scans source files, not the DOM** — including `src/*.php`, which
-  is why the `bg-[#...]` values in `ItemsController::ITEMS` compile. Class names
-  must therefore appear as complete literals; never assemble one at runtime from
-  fragments, or it silently won't be generated.
+  is why the `bg-[#...]` values in `ItemStory` compile. Class
+  names must therefore appear as complete literals; never assemble one at runtime
+  from fragments, or it silently won't be generated. An item's `colorClass` is a
+  DB column, so any new colour must also exist verbatim somewhere under `src/`.
 - **Doctrine + Postgres**, attribute mapping under `src/Entity`, underscore
-  naming strategy, `IDENTITY` generation on Postgres. One migration exists (the
-  `user` table).
+  naming strategy, `IDENTITY` generation on Postgres. Two migrations exist (the
+  `user` and `item` tables).
+- **Fixtures go through Zenstruck Foundry alone** — there is no
+  DoctrineFixturesBundle and no `src/DataFixtures/`. `ItemStory` (name `items`)
+  holds the six canonical items and `UserStory` (name `users`) the admin; both
+  carry `groups: ['dev']`, so `foundry:load-fixtures dev` loads everything and a
+  bare name loads just one. Stories register each object with `addState()`, so
+  tests can reach them via `ItemStory::get('phaser')` or
+  `ItemStory::getRandom('items')`.
+- **A story is mandatory, a factory is not — and there are no factories.**
+  `#[AsFixture]` throws on anything that isn't a `Story`, so a story is the only
+  entry point `foundry:load-fixtures` can find; a factory can never be one. Both
+  stories build their objects with Foundry's `persist(Class::class, [...])`
+  helper, which spins up an anonymous factory internally, so `src/Factory/`
+  doesn't exist. Add a real factory only once something needs varied objects —
+  `persistent_factory(Item::class)` inline in a test, or `make:factory`.
+- **`foundry:load-fixtures` rebuilds the database, it does not merely purge it.**
+  `orm.reset.mode` is set to `migrate` in `config/packages/zenstruck_foundry.yaml`
+  so the rebuild replays the migrations; the default `schema` mode would drop and
+  recreate the schema and wipe `doctrine_migration_versions`, leaving
+  `migrations:status` convinced every migration is pending. Pass `--append` to
+  skip the reset. A full reset means item ids are stable at 1–6.
+- `UserStory` creates the single `ROLE_ADMIN` account —
+  `the.curator@lost-and-found.time` / `tardis` (the `ADMIN_EMAIL` and `PASSWORD`
+  consts). `password` is a hashed column, so the story injects
+  `PasswordHasherFactoryInterface` and hashes the plain value itself; stories are
+  autoconfigured services, which is what makes that injection work.
 - Autowiring/autoconfiguration is on for everything in `src/` (
   `config/services.yaml`); routes come from `#[Route]` attributes.
 - `config/reference.php` is auto-generated and gitignored — never hand-edit it.
 
 ## Current state (intentionally incomplete)
 
-- **There is still no `Item` entity, repository, or fixture.** `ItemsController`
-  holds the six items in a `private const ITEMS` array keyed by id, as a
-  deliberate stand-in: `index()` passes them all, `show(int $id)` looks one up
-  and throws `createNotFoundException()` on a miss. Swapping that const for
-  Doctrine is the intended next step; the templates already consume the data
-  through `items` / `item` variables, so they should not need to change much.
+- `Item` is now a real entity backed by Doctrine. `ItemsController::index()`
+  injects `ItemRepository` and sorts by id; `show(Item $item)` relies on the
+  `EntityValueResolver` for lookup and the 404, so there is no manual
+  `createNotFoundException()` any more.
 - The claim form in `show.html.twig` is markup only — no Symfony Form type, no
   route or handler, no CSRF token. Submitting it does nothing.
-- The only entity is `User`; EasyAdmin is installed and routed but has no
-  Dashboard controller, and the security firewall has a user provider but no
-  authenticator or login route.
+- EasyAdmin is installed and routed but has no Dashboard controller, and the
+  security firewall has a user provider but no authenticator or login route.

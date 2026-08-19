@@ -1,103 +1,52 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
         <meta charset="UTF-8">
-        <title>Time Traveler's Lost &amp; Found</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>{% block title %}Time Traveler's Lost &amp; Found{% endblock %}</title>
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-        
-        {% block stylesheets %}
-          <style>
-            body { font-family: 'Inter', sans-serif; }
-            .font-display { font-family: 'Orbitron', sans-serif; }
-            .tardis-lamp {
-                box-shadow: 0 0 10px 3px rgba(242,169,59,0.8);
-                animation: pulse-lamp 2.4s ease-in-out infinite;
-            }
-            @keyframes pulse-lamp {
-                0%, 100% { opacity: 1; box-shadow: 0 0 8px 2px rgba(242,169,59,0.7); }
-                50% { opacity: 0.6; box-shadow: 0 0 16px 5px rgba(242,169,59,0.4); }
-            }
-            .item-card {
-                transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
-            }
-            .item-card:hover {
-                transform: translateY(-4px);
-                box-shadow: 0 10px 30px rgba(11, 61, 145, 0.18);
-                border-color: #2F5FA8;
-            }
-            .panel-lines {
-                background-image: repeating-linear-gradient(90deg, rgba(255,255,255,0.06) 0px, rgba(255,255,255,0.06) 2px, transparent 2px, transparent 40px);
-            }
-          </style>
-        {% endblock %}
+
+        {% block stylesheets %}{% endblock %}
 
         {% block javascripts %}
-            <script src="https://cdn.tailwindcss.com"></script>
-            <script>
-              tailwind.config = {
-                theme: {
-                  extend: {
-                    colors: {
-                      tardis: {
-                        DEFAULT: '#0B3D91',
-                        dark: '#061C3E',
-                        light: '#2F5FA8',
-                        50: '#EAF1FC'
-                      },
-                      accent: {
-                        DEFAULT: '#F2A93B',
-                        dark: '#C9820A',
-                        light: '#FBD08A'
-                      }
-                    },
-                    fontFamily: {
-                      display: ['Orbitron', 'sans-serif'],
-                      body: ['Inter', 'sans-serif']
-                    },
-                    boxShadow: {
-                      glow: '0 0 25px rgba(242, 169, 59, 0.35)'
-                    }
-                  }
-                }
-              };
-            </script>
             {% block importmap %}{{ importmap('app') }}{% endblock %}
         {% endblock %}
 
         {% set frankenphp_hot_reload = app.request.server.get('FRANKENPHP_HOT_RELOAD') %}
         {% if frankenphp_hot_reload %}
-        <meta name="frankenphp-hot-reload:url" content="{{ frankenphp_hot_reload }}">
-        <script src="https://cdn.jsdelivr.net/npm/idiomorph"></script>
-        <script src="https://cdn.jsdelivr.net/npm/frankenphp-hot-reload/+esm" type="module"></script>
+            <meta name="frankenphp-hot-reload:url" content="{{ frankenphp_hot_reload }}">
+            <script src="https://cdn.jsdelivr.net/npm/idiomorph"></script>
+            <script src="https://cdn.jsdelivr.net/npm/frankenphp-hot-reload/+esm" type="module"></script>
         {% endif %}
     </head>
 
-    <body>
-    
-        <header class="bg-tardis dark:bg-tardis panel-lines border-b-4 border-accent">
+    <body class="bg-tardis-50 text-slate-800 min-h-screen flex flex-col">
+        <header class="bg-tardis panel-lines border-b-4 border-accent">
             <div class="max-w-6xl mx-auto px-6 py-6 flex items-center justify-between">
-            <div class="flex items-center gap-3">
-                <span class="w-4 h-4 rounded-full bg-accent tardis-lamp"></span>
-                <div>
-                <h1 class="font-display text-white text-xl sm:text-2xl tracking-wide">TIME TRAVELER'S LOST &amp; FOUND</h1>
-                <p class="text-tardis-light text-xs sm:text-sm font-medium tracking-widest uppercase">Property Office &middot; Displaced in Time</p>
+                <div class="flex items-center gap-3">
+                    <span class="w-4 h-4 rounded-full bg-accent tardis-lamp"></span>
+                    <div>
+                        <h1 class="font-display text-white text-xl sm:text-2xl tracking-wide">TIME TRAVELER'S LOST &amp; FOUND</h1>
+                        <p class="text-tardis-light text-xs sm:text-sm font-medium tracking-widest uppercase">Property Office &middot; Displaced in Time</p>
+                    </div>
+                </div>
+                <div class="hidden sm:block text-right text-tardis-50/80 text-xs font-medium">
+                    <p>Est. sometime.</p>
+                    <p>Somewhen, Gallifrey.</p>
                 </div>
             </div>
-            <div class="hidden sm:block text-right text-tardis-50/80 text-xs font-medium">
-                <p>Est. sometime.</p>
-                <p>Somewhen, Gallifrey.</p>
-            </div>
-            </div>
         </header>
+
         {% block body %}
         {% endblock %}
+
         <footer class="bg-tardis-dark text-tardis-50/70 text-xs">
-          <div class="max-w-6xl mx-auto px-6 py-6 flex flex-col sm:flex-row justify-between gap-2">
-            <p>&copy; <span id="year"></span> Time Traveler's Lost &amp; Found. All temporal paradoxes are your own responsibility.</p>
-            <p>Unclaimed items after 400 years will be recycled into sonic screwdrivers.</p>
-          </div>
+            <div class="max-w-6xl mx-auto px-6 py-6 flex flex-col sm:flex-row justify-between gap-2">
+                <p>&copy; {{ "now"|date("Y") }} Time Traveler's Lost &amp; Found. All temporal paradoxes are your own responsibility.</p>
+                <p>Unclaimed items after 400 years will be recycled into sonic screwdrivers.</p>
+            </div>
         </footer>
     </body>
 </html>

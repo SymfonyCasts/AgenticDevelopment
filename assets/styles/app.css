@@ -1,1 +1,51 @@
 @import "tailwindcss";
+
+@theme {
+    --color-tardis: #0B3D91;
+    --color-tardis-dark: #061C3E;
+    --color-tardis-light: #2F5FA8;
+    --color-tardis-50: #EAF1FC;
+
+    --color-accent: #F2A93B;
+    --color-accent-dark: #C9820A;
+
+    --font-sans: 'Inter', sans-serif;
+    --font-display: 'Orbitron', sans-serif;
+}
+
+@layer components {
+    /* Glowing lamp atop the TARDIS. Static shadow is what shows when the
+       animation is suppressed, so it needs to stand on its own. */
+    .tardis-lamp {
+        box-shadow: 0 0 10px 3px color-mix(in srgb, var(--color-accent) 80%, transparent);
+        animation: pulse-lamp 2.4s ease-in-out infinite;
+    }
+
+    /* Faint vertical banding across the header. */
+    .panel-lines {
+        background-image: repeating-linear-gradient(
+            90deg,
+            rgba(255, 255, 255, 0.06) 0,
+            rgba(255, 255, 255, 0.06) 2px,
+            transparent 2px,
+            transparent 40px
+        );
+    }
+}
+
+@keyframes pulse-lamp {
+    0%, 100% {
+        opacity: 1;
+        box-shadow: 0 0 8px 2px color-mix(in srgb, var(--color-accent) 70%, transparent);
+    }
+    50% {
+        opacity: 0.6;
+        box-shadow: 0 0 16px 5px color-mix(in srgb, var(--color-accent) 40%, transparent);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .tardis-lamp {
+        animation: none;
+    }
+}
